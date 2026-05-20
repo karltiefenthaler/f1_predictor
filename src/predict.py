@@ -84,15 +84,8 @@ def predict_next_race() -> pd.DataFrame:
     merged["main_positive_factors"] = factor_strings.str[0]
     merged["main_negative_factors"] = factor_strings.str[1]
 
-    grand_prix = str(merged.get("race_name", pd.Series(["Unknown Grand Prix"])).dropna().iloc[0])
-
-    cols = ["race_name", "position", "driver", "team", "win_probability", "main_positive_factors", "main_negative_factors"]
-    if "race_name" not in merged.columns:
-        merged["race_name"] = grand_prix
-
+    cols = ["position", "driver", "team", "win_probability", "main_positive_factors", "main_negative_factors"]
     out = merged[cols]
     out.to_csv(PREDICTIONS_PATH, index=False)
-
-    print(f"\nPredicted win probabilities for: {grand_prix}\n")
     print(out.to_string(index=False, float_format=lambda x: f"{x:.4f}"))
     return out
